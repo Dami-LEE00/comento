@@ -8,14 +8,22 @@ import SignIn from "./pages/SignIn";
 
 function App() {
   return (
-    <div>
+    <div css={wrapper}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />s
+        <Route path="/signin" element={<SignIn />} />
       </Routes>
     </div>
   )
 }
 
 export default App;
+
+const wrapper = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
