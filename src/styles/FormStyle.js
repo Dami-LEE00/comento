@@ -26,6 +26,7 @@ export const inputWrapper = css`
   label {
     display: inline-block;
     width: 10rem;
+    cursor: pointer;
   }
   input {
     width: 15rem;
