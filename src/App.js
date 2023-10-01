@@ -24,6 +24,6 @@ const wrapper = css`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start;
+  padding-top: 2.5rem;
 `;
