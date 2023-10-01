@@ -15,14 +15,16 @@ function SignIn() {
       <h1>SignIn</h1>
       <form css={formWrapper}>
         <div css={inputWrapper}>
-          <label>Email</label>
+          <label htmlFor='email'>Email</label>
           <input
+            id="email"
             type="email"
           />
         </div>
         <div css={inputWrapper}>
-          <label>Password</label>
+          <label htmlFor='pw'>Password</label>
           <input
+            id="pw"
             type="password"
           />
         </div>

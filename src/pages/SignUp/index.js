@@ -2,39 +2,54 @@
 
 import { useNavigate } from "react-router-dom";
 import { wrapper, formWrapper, inputWrapper, btnWrapper } from "../../styles/FormStyle";
+import { useForm } from "react-hook-form";
 
 function SignUp() {
   const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
+  const onSubmit = (data) => {
+    console.log(data);
+    // 여기서 데이터를 서버로 보내거나 다른 작업을 수행할 수 있습니다.
+  };
   const handleSignIn = () => {
     navigate('/signin');
   }
+  
   return (
     <div css={wrapper}>
       <h1>SignUp</h1>
-      <form css={formWrapper}>
+      <form onSubmit={handleSubmit(onSubmit)} css={formWrapper}>
         <div css={inputWrapper}>
-          <label>Email</label>
+          <label htmlFor='email'>Email</label>
           <input
             type="email"
+            id="email"
+            name="email"
+            {...register('email', { required: 'Email is required' })}
           />
         </div>
+        {errors.email && <p>{errors.email.message}</p>}
         <div css={inputWrapper}>
-          <label>Name</label>
+          <label htmlFor='name'>Name</label>
           <input
             type="text"
+            id="name"
+            name="name"
           />
         </div>
         <div css={inputWrapper}>
-          <label>Password</label>
+          <label htmlFor='pw'>Password</label>
           <input
             type="password"
+            id="pw"
           />
         </div>
         <div css={inputWrapper}>
-          <label>Confirm Password</label>
+          <label htmlFor='confirmPw'>Confirm Password</label>
           <input
             type="password"
+            id="confirmPw"
           />
         </div>
         <div css={btnWrapper}>
