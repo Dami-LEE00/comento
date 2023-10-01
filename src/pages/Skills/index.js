@@ -12,7 +12,7 @@ function Skills() {
           <div css={logoImg}>
             <img
               src={item.img}
-              alt='skill logo'
+              alt={item.skill}
             />         
           </div>
         ))}
@@ -46,18 +46,10 @@ const logoImg = css`
   padding: 0.625rem;
   img {
     width: 100%;
-    &::after {
-      position: absolute;
-      top: 0;
-      left: 0;
-      content: '';
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0);
-      transition: 0.3s;
-    }
-    &:hover::after {
-      background-color: rgba(0, 0, 0, 0.4);
+    transform: scale(0.9);
+    transition: 0.25s;
+    &:hover {
+      transform: scale(1.1);
     }
   }
   `;
