@@ -1,11 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { wrapper, formWrapper, inputWrapper, btnWrapper, errorWrapper } from "../../styles/FormStyle";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 
 function SignUp() {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [pw, setPw] = useState('');
+  const [confirmPw, setConfirmPw] = useState('');
   const navigate = useNavigate();
   const { register, handleSubmit, errors } = useForm();
 
@@ -34,6 +39,8 @@ function SignUp() {
             id="email"
             name="email"
             placeholder="이메일"
+            value={email}
+            onChange={setEmail}
             {...register('email',{ 
               required: '이메일은 필수 항목입니다.' 
             })}
@@ -49,6 +56,8 @@ function SignUp() {
             id="name"
             name="name"
             placeholder="이름"
+            value={name}
+            onChange={setName}
             {...register('name',{ 
               required: '이메일은 필수 항목입니다.',
             })}
@@ -61,6 +70,8 @@ function SignUp() {
             id="pw"
             name="pw"
             placeholder="비밀번호"
+            value={pw}
+            onChange={setPw}
             {...register('pw',{ 
               required: '이메일은 필수 항목입니다.',
             })}
@@ -73,6 +84,8 @@ function SignUp() {
             id="confirmPw"
             name="confirmPw"
             placeholder="비밀번호 확인"
+            value={confirmPw}
+            onChange={setConfirmPw}
             {...register('confirmPw',{ 
               required: '이메일은 필수 항목입니다.',
             })}
