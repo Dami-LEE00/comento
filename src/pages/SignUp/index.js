@@ -1,20 +1,27 @@
 /** @jsxImportSource @emotion/react */
 
 import { useNavigate } from "react-router-dom";
-import { wrapper, formWrapper, inputWrapper, btnWrapper } from "../../styles/FormStyle";
+import { wrapper, formWrapper, inputWrapper, btnWrapper, errorWrapper } from "../../styles/FormStyle";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 
 function SignUp() {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // 여기서 데이터를 서버로 보내거나 다른 작업을 수행할 수 있습니다.
-  };
   const handleSignIn = () => {
     navigate('/signin');
-  }
+  };
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post('https://vercel-express-pied-kappa.vercel.app/users/signup', data); // API 호출
+      console.log('회원가입이 완료되었습니다.', response.data);
+      alert('회원가입이 완료되었습니다.');
+      navigate('/signin');
+    } catch (error) {
+      console.error('회원가입에 실패하였습니다.', error);
+    }
+  };
   
   return (
     <div css={wrapper}>
@@ -26,16 +33,25 @@ function SignUp() {
             type="email"
             id="email"
             name="email"
-            {...register('email', { required: 'Email is required' })}
+            placeholder="이메일"
+            {...register('email',{ 
+              required: '이메일은 필수 항목입니다.' 
+            })}
           />
         </div>
-        {errors.email && <p>{errors.email.message}</p>}
+        <div css={errorWrapper}>
+          {errors.email && <p>{errors.email.message}</p>}
+        </div>
         <div css={inputWrapper}>
           <label htmlFor='name'>Name</label>
           <input
             type="text"
             id="name"
             name="name"
+            placeholder="이름"
+            {...register('name',{ 
+              required: '이메일은 필수 항목입니다.',
+            })}
           />
         </div>
         <div css={inputWrapper}>
@@ -43,6 +59,11 @@ function SignUp() {
           <input
             type="password"
             id="pw"
+            name="pw"
+            placeholder="비밀번호"
+            {...register('pw',{ 
+              required: '이메일은 필수 항목입니다.',
+            })}
           />
         </div>
         <div css={inputWrapper}>
@@ -50,11 +71,16 @@ function SignUp() {
           <input
             type="password"
             id="confirmPw"
+            name="confirmPw"
+            placeholder="비밀번호 확인"
+            {...register('confirmPw',{ 
+              required: '이메일은 필수 항목입니다.',
+            })}
           />
         </div>
         <div css={btnWrapper}>
-          <button type="button">회원가입 완료</button>
-          <button onClick={handleSignIn} type="submit">로그인</button>
+          <button type="submit">회원가입 완료</button>
+          <button onClick={handleSignIn} type="button">로그인</button>
         </div>
       </form>
     </div>

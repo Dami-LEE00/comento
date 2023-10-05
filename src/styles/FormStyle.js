@@ -47,3 +47,7 @@ export const btnWrapper = css`
     padding: .625rem 0;
   }
 `;
+
+export const errorWrapper = css`
+  padding-left: 10rem;;
+`;
