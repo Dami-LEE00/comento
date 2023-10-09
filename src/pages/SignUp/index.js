@@ -1,17 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
 import { wrapper, formWrapper, inputWrapper, btnWrapper, errorWrapper } from "../../styles/FormStyle";
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
 function Signup() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const { register, handleSubmit, formState: { errors } } = useForm();
 
 
@@ -19,25 +14,19 @@ function Signup() {
     navigate('/signin');
   }
 
-  const handleSignup = async () => {
-    try {
-      const response = await axios.post('https://vercel-express-pied-kappa.vercel.app/users/signup', {
-        email: email,
-        name: name,
-        password: password,
-        passwordConfirm: passwordConfirm,
-      });
-
-      if (!response.data.isError) {
+  const handleSignup = async (data) => {
+    if(data.password === data.passwordConfirm) {
+      try {
+        const response = await axios.post('https://vercel-express-pied-kappa.vercel.app/users/signup', data);
+        console.log(response.data);
         alert('회원가입이 완료되었습니다.');
         navigate('/signin');
-      } else {
-        alert(response.data.message);
-        console.log(response.data.message);
+      } catch (error) {
+        alert('Error');
+        console.error(error.response.data);
       }
-    } catch (error) {
-      alert('Error');
-      console.error(error);
+    } else {
+      alert('비밀번호가 같지 않습니다. 다시 입력하세요.');
     }
   };
 

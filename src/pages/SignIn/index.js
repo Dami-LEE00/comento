@@ -1,14 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
 import { wrapper, formWrapper, inputWrapper, btnWrapper, errorWrapper } from "../../styles/FormStyle";
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
 function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -17,23 +14,21 @@ function SignIn() {
     navigate('/signup');
   }
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (data) => {
     try {
-      const response = await axios.post('https://vercel-express-pied-kappa.vercel.app/users/signin', {
-        email: email,
-        password: password,
-      });
-
+      const response = await axios.post('https://vercel-express-pied-kappa.vercel.app/users/signin', data);
       if (!response.data.isError) { 
-        localStorage.setItem('token', response.data.token); // 토큰 값을 저장
+        localStorage.setItem('token', response.data.token);
+        console.log(response.data);
         alert('로그인이 완료되었습니다.');
         navigate('/');
       } else { 
+        console.log(response.data);
         alert('다시 입력해주세요.');
       }
     } catch (error) { 
       alert('Error');
-      console.error(error);
+      console.error(error.response.data);
     }
   };
 
