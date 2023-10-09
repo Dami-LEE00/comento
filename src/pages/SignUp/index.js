@@ -1,103 +1,113 @@
 /** @jsxImportSource @emotion/react */
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { wrapper, formWrapper, inputWrapper, btnWrapper, errorWrapper } from "../../styles/FormStyle";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useForm } from "react-hook-form";
-import axios from 'axios';
 
-function SignUp() {
+function Signup() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [pw, setPw] = useState('');
-  const [confirmPw, setConfirmPw] = useState('');
-  const navigate = useNavigate();
-  const { register, handleSubmit, errors } = useForm();
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
 
   const handleSignIn = () => {
     navigate('/signin');
-  };
-  const onSubmit = async (data) => {
+  }
+
+  const handleSignup = async () => {
     try {
-      const response = await axios.post('https://vercel-express-pied-kappa.vercel.app/users/signup', data); // API 호출
-      console.log('회원가입이 완료되었습니다.', response.data);
-      alert('회원가입이 완료되었습니다.');
-      navigate('/signin');
+      const response = await axios.post('https://vercel-express-pied-kappa.vercel.app/users/signup', {
+        email: email,
+        name: name,
+        password: password,
+        passwordConfirm: passwordConfirm,
+      });
+
+      if (!response.data.isError) {
+        alert('회원가입이 완료되었습니다.');
+        navigate('/signin');
+      } else {
+        alert(response.data.message);
+        console.log(response.data.message);
+      }
     } catch (error) {
-      console.error('회원가입에 실패하였습니다.', error);
+      alert('Error');
+      console.error(error);
     }
   };
-  
+
   return (
     <div css={wrapper}>
       <h1>SignUp</h1>
-      <form onSubmit={handleSubmit(onSubmit)} css={formWrapper}>
+      <form onSubmit={handleSubmit(handleSignup)} css={formWrapper}>
         <div css={inputWrapper}>
           <label htmlFor='email'>Email</label>
-          <input
-            type="email"
+          <input 
+            type="text" 
+            placeholder="이메일" 
             id="email"
-            name="email"
-            placeholder="이메일"
-            value={email}
-            onChange={setEmail}
-            {...register('email',{ 
-              required: '이메일은 필수 항목입니다.' 
+            {...register("email", {
+              required: "이메일은 필수 항목입니다.",
             })}
           />
         </div>
         <div css={errorWrapper}>
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && <span>{errors.email.message}</span>}
         </div>
         <div css={inputWrapper}>
           <label htmlFor='name'>Name</label>
-          <input
-            type="text"
+          <input 
+            type="text" 
+            placeholder="이름" 
             id="name"
-            name="name"
-            placeholder="이름"
-            value={name}
-            onChange={setName}
-            {...register('name',{ 
-              required: '이메일은 필수 항목입니다.',
+            {...register("name", {
+              required: "이름은 필수 항목입니다.",
             })}
           />
         </div>
+        <div css={errorWrapper}>
+          {errors.name && <span>{errors.name.message}</span>}
+        </div>
         <div css={inputWrapper}>
-          <label htmlFor='pw'>Password</label>
-          <input
-            type="password"
-            id="pw"
-            name="pw"
-            placeholder="비밀번호"
-            value={pw}
-            onChange={setPw}
-            {...register('pw',{ 
-              required: '이메일은 필수 항목입니다.',
+          <label htmlFor='password'>Password</label>
+          <input 
+            type="password" 
+            placeholder="비밀번호" 
+            id="password"
+            {...register("password", {
+              required: "비밀번호는 필수 항목입니다.",
             })}
           />
         </div>
+        <div css={errorWrapper}>
+          {errors.password && <span>{errors.password.message}</span>}
+        </div>
         <div css={inputWrapper}>
-          <label htmlFor='confirmPw'>Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPw"
-            name="confirmPw"
-            placeholder="비밀번호 확인"
-            value={confirmPw}
-            onChange={setConfirmPw}
-            {...register('confirmPw',{ 
-              required: '이메일은 필수 항목입니다.',
+          <label htmlFor='passwordConfirm'>Confirm Password</label>
+          <input 
+            type="password" 
+            placeholder="비밀번호확인" 
+            id="passwordConfirm"
+            {...register("passwordConfirm", {
+              required: "비밀번호 확인은 필수 항목입니다.",
             })}
           />
+        </div>
+        <div css={errorWrapper}>
+          {errors.passwordConfirm && <span>{errors.passwordConfirm.message}</span>}
         </div>
         <div css={btnWrapper}>
-          <button type="submit">회원가입 완료</button>
+          <button>회원가입 완료</button>
           <button onClick={handleSignIn} type="button">로그인</button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp;
+export default Signup;

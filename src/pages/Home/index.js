@@ -59,6 +59,6 @@ const descWrapper = css`
 `;
 
 const btnLogOut = css`
-  width: 100%;
+  width: 25%;
   padding: .625rem 0;
 `;

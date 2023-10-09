@@ -49,5 +49,7 @@ export const btnWrapper = css`
 `;
 
 export const errorWrapper = css`
-  padding-left: 10rem;;
+  padding-left: 40%;
+  font-size: .875rem;
+  color: red;
 `;
