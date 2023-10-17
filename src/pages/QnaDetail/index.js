@@ -9,7 +9,7 @@ function QnaDetail() {
   const navigate= useNavigate();
   const { id } = useParams();
   const [qnaDetail, setQnaDetail] = useState({});
-  const [response, setResponse] = useState('');
+  const [responseText, setResponseText] = useState("");
 
   useEffect(() => {
     const fetchQnaDetail = async () => {
@@ -18,7 +18,7 @@ function QnaDetail() {
         const { data } = response.data;
         setQnaDetail(data);
       } catch (error) {
-        console.error('Error fetching Q&A detail:', error);
+        console.error('Error fetching QnaDetail data: ', error);
       }
     };
 
@@ -26,62 +26,66 @@ function QnaDetail() {
   }, [id]);
 
   const handleResponseChange = (e) => {
-    setResponse(e.target.value);
+    setResponseText(e.target.value);
   };
 
   const handleResponseSubmit = async () => {
     try {
-      // Implement the update API call here to submit the response
-      // You may use axios.post or a similar method
-      // Don't forget to handle success and error cases
-      // After a successful response, you can update the UI accordingly
+      const response = await axios.post(`https://vercel-express-pied-kappa.vercel.app/qna/${id}`);
+      const { isDone } = response.data;
+      setQnaDetail({ ...qnaDetail, isDone });
+      navigate(`/`);
     } catch (error) {
-      console.error('Error submitting response:', error);
+      console.error("Error submitting response : ", error);
     }
   };
 
   return (
-    <div css={wrapper}>
-      <h1>Q&A Detail</h1>
-      <div css={infoWrapper}>
-        <div css={infoBox}>
-          <span>번호</span>
-          <p>정보</p>
-        </div>
-        <div css={infoBox}>
-          <span>제목</span>
-          <p>컴플레인 확인해주세요!</p>
-        </div>
-        <div css={infoBox}>
-          <span>생성일</span>
-          <p>2023.10.10.</p>
-        </div>
-      </div>
-      <div css={detailWrapper}>
-        <div css={detailContent}>
-          <h4>상세 내용</h4>
-          <div>
-            현재 제품이 사용 불가능한 상태 ...
+    <>
+      {qnaDetail ? (
+        <div css={wrapper}>
+          <h1>Q&A Detail</h1>
+          <div css={infoWrapper}>
+            <div css={infoBox}>
+              <span>번호</span>
+              <p>{qnaDetail.id}</p>
+            </div>
+            <div css={infoBox}>
+              <span>제목</span>
+              <p>{qnaDetail.title}</p>
+            </div>
+            <div css={infoBox}>
+              <span>생성일</span>
+              <p>{qnaDetail.createdAt}</p>
+            </div>
           </div>
-        </div>
-        <div css={detailAnswer}>
-          <h4>답변 내용 작성</h4>
-          <div>
-            <textarea 
-              value={response}
-              onChange={handleResponseChange}
-            />
+          <div css={detailWrapper}>
+            <div css={detailContent}>
+              <h4>상세 내용</h4>
+              <div>{qnaDetail.content}</div>
+            </div>
+            <div css={detailAnswer}>
+              <h4>답변 내용 작성</h4>
+              <div>
+                <textarea 
+                  value={responseText}
+                  onChange={handleResponseChange}
+                />
+              </div>
+              <button onClick={handleResponseSubmit}>답변 작성 완료</button>
+            </div>
           </div>
-          <button onClick={handleResponseSubmit}>답변 작성 완료</button>
+          <button 
+            css={btnQnaList}
+            onClick={() => navigate('/')}
+          >
+            목록으로 돌아가기
+          </button>
         </div>
-      </div>
-      <button 
-        css={btnQnaList}
-        onClick={() => navigate('/')}
-      >
-        목록으로 돌아가기
-      </button>
-    </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </>
   )
 }
 

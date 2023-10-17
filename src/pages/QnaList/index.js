@@ -4,7 +4,6 @@ import { css } from "@emotion/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import objectData from '../../../objectData.json';
 
 function QnaList() {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ function QnaList() {
         });
         const { data } = response.data;
         setQnaData(data.contents);
-        setTotalPages(Math.ceil(data.totalElements / 10)); // Assuming 10 items per page
+        setTotalPages(Math.ceil(data.totalElements / 10));
       } catch (error) {
         console.error('Error fetching Q&A list:', error);
       }
@@ -44,12 +43,18 @@ function QnaList() {
           <th>생성일</th>
           <th>답변 완료 여부</th>
         </tr>
-        <tr css={listWrapper}>
-          <td>숫자</td>
-          <td>제목 아무개</td>
-          <td>생성일 아무개</td>
-          <td>답변완료 여부 아무개</td>
-        </tr>
+        {qnaData.map((qna) => (
+          <tr
+            key={qna.id}
+            css={listWrapper}
+            onClick={() => navigate(`/qna/${qna.id}`)}
+          >
+            <td>{qna.id}</td>
+            <td>{qna.title}</td>
+            <td>{qna.createdAt}</td>
+            <td>{qna.isDone ? "답변 완료" : "미답변"}</td>
+          </tr>
+        ))}
       </table>
       <div css={btnWrapper}>
         <button
@@ -59,13 +64,13 @@ function QnaList() {
           이전
         </button>
         {Array.from({ length: totalPages }, (_, index) => (
-        <button
-          key={index + 1}
-          onClick={() => handlePageChange(index + 1)}
-          style={{ fontWeight: currentPage === index + 1 ? 'bold' : 'normal' }}
-        >
-          {index + 1}
-        </button>
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            style={{ fontWeight: currentPage === index + 1 ? 'bold' : 'normal' }}
+          >
+            {index + 1}
+          </button>
         ))}
         <button
           onClick={() => handlePageChange(currentPage + 1)}

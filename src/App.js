@@ -2,7 +2,6 @@
 
 import { css } from "@emotion/react";
 import { Routes, Route } from "react-router-dom";
-import Main from "./pages/QnaList";
 import QnaList from "./pages/QnaList";
 import QnaDetail from "./pages/QnaDetail";
 
@@ -11,7 +10,7 @@ function App() {
     <div css={wrapper}>
       <Routes>
         <Route path="/" element={<QnaList />} />
-        <Route path="/qna/:id" element={<QnaList />} />
+        <Route path="/qna/:id" element={<QnaDetail />} />
       </Routes>
     </div>
   );
