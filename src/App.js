@@ -2,12 +2,16 @@
 
 import { css } from "@emotion/react";
 import { Routes, Route } from "react-router-dom";
+import Main from "./pages/QnaList";
+import QnaList from "./pages/QnaList";
+import QnaDetail from "./pages/QnaDetail";
 
 function App() {
   return (
     <div css={wrapper}>
       <Routes>
-        <Route />
+        <Route path="/" element={<QnaList />} />
+        <Route path="/qna/:id" element={<QnaList />} />
       </Routes>
     </div>
   );
@@ -19,6 +23,5 @@ const wrapper = css`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  padding: 1.25rem 2.5rem;
 `;
