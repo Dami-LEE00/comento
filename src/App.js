@@ -13,6 +13,10 @@ function App() {
       <Nav />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/new' element={<New />} />
+        <Route path='/best' element={<Best />} />
+        <Route path='/smart' element={<Smart />} />
+        <Route path='/special' element={<Special />} />
       </Routes>
     </div>
   );
