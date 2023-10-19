@@ -14,6 +14,16 @@ const BannerCarousel = () => {
   const carouselRef = useRef(null);
 
   useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
+    }, 3000);
+
+    return () => {
+      clearInterval(intervalId); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
+    };
+  }, []);
+
+  useEffect(() => {
     if (carouselRef.current !== null) {
       carouselRef.current.style.transform = `translateX(-${currentIndex}00%)`;
     }
@@ -30,7 +40,7 @@ const BannerCarousel = () => {
   return (
     <div className="carousel-container">
       <button onClick={prevSlide} className="arrow left-arrow">
-        &#9664;
+        &lt;
       </button>
       <div className="carousel" ref={carouselRef}>
         {banners.map((banner, index) => (
@@ -45,7 +55,7 @@ const BannerCarousel = () => {
         ))}
       </div>
       <button onClick={nextSlide} className="arrow right-arrow">
-        &#9654;
+        &gt;
       </button>
     </div>
   );
