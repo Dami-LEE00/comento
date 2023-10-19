@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './BannerCarousel.css';
 
 const banners = [
@@ -11,6 +11,13 @@ const banners = [
 
 const BannerCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const carouselRef = useRef(null);
+
+  useEffect(() => {
+    if (carouselRef.current !== null) {
+      carouselRef.current.style.transform = `translateX(-${currentIndex}00%)`;
+    }
+  }, [currentIndex]);
 
   const nextSlide = () => {
     setCurrentIndex((currentIndex + 1) % banners.length);
@@ -25,14 +32,12 @@ const BannerCarousel = () => {
       <button onClick={prevSlide} className="arrow left-arrow">
         &#9664;
       </button>
-      <div className="carousel">
+      <div className="carousel" ref={carouselRef}>
         {banners.map((banner, index) => (
           <div
             key={index}
             className={`carousel-slide ${
-              index === currentIndex || (index === 0 && currentIndex === banners.length)
-                ? 'active'
-                : ''
+              index === currentIndex || (index === 0 && currentIndex === banners.length) ? 'active' : ''
             }`}
           >
             <img src={banner} alt={`Banner ${index + 1}`} />
