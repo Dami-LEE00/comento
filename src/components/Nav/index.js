@@ -33,6 +33,8 @@ export default Nav;
 
 const wrapper = css`
   width: 100%;
+  /* position: fixed; */
+  z-index: 999;
 `;
 
 const navBar = css`
